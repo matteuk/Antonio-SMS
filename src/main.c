@@ -12,55 +12,54 @@ PBL_APP_INFO(HTTP_UUID,
     RESOURCE_ID_MENU_ICON,
     APP_INFO_STANDARD_APP);
 
+#define MAIL_TO_SMS_COOKIE   9997
+#define TOTAL_WHO 2
+#define TOTAL_MSG 3
+	
 Window mainWindow;
 TextLayer whoLayer, msgLayer, cmdLayer;
-#define MAIL_TO_SMS_COOKIE   9997
+int who_sel = 0;
+int msg_sel = 0;
+const char* nam_list[] = {"Antonio",                   "Lori"};
+const char* who_list[] = {"4165621384@sms.rogers.com", "4162713650@sms.rogers.com"};
+const char* msg_list[] = {"Running late ...", "On my way home", "Busy, call you later"};
+static char nam_text[64];
+static char msg_text[64];
 
-	
-void request_mail_to_sms(int who_sel, int msg_sel) {
+void request_mail_to_sms() {
     DictionaryIterator *body;
     static char who[64];
     static char msg[64];
     static char url[256];
 
-//	strcpy(who, "&who=antonio@antonioasaro.site50.net");
- //   strcpy(msg, "&msg=Busy, call you later.");
- 
     strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
-    strcpy(who, ",&who=4165621384@sms.rogers.com");
-    strcpy(msg, ",&msg=Runnning late ...");
-//	strcpy(url, WEATHER_LOC_UNITS);
-//	strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
-//    strcat(url, who); strcat(url, msg);
-//    text_layer_set_text(&cmdLayer, url);
+//    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=send");
+    strcpy(who, ",&who="); strcpy(msg, ",&msg=");
+	strcat(who, who_list[who_sel]); strcat(msg, msg_list[msg_sel]);
 	if (http_out_get(url, false, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
         http_out_send() != HTTP_OK) {
     }
 }
 
 void up_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
-    text_layer_set_text(&whoLayer, "up_single_click");
-    text_layer_set_text(&msgLayer, "");
-    text_layer_set_text(&cmdLayer, "");
+	who_sel++; if (who_sel == TOTAL_WHO) who_sel = 0;
+	strcpy(nam_text, "To: "); strcat(nam_text, nam_list[who_sel]);
+    text_layer_set_text(&whoLayer, nam_text);
 }
 
 void select_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
-    text_layer_set_text(&whoLayer, "select_single_clic");
-    text_layer_set_text(&msgLayer, "");
-    text_layer_set_text(&cmdLayer, "");
+//    text_layer_set_text(&cmdLayer, "select_single_click");
 }
 
 void select_long_click_handler(ClickRecognizerRef recognizer, Window *window) {
-    text_layer_set_text(&whoLayer, "select_long_click");
-    text_layer_set_text(&msgLayer, "");
-    text_layer_set_text(&cmdLayer, "");
-    request_mail_to_sms(1, 2);
+    text_layer_set_text(&cmdLayer, "Sending ...");
+    request_mail_to_sms();
 }
 
 void down_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
-    text_layer_set_text(&whoLayer, "down_single_click");
-    text_layer_set_text(&msgLayer, "");
-    text_layer_set_text(&cmdLayer, "");
+	msg_sel++; if (msg_sel == TOTAL_MSG) msg_sel = 0;
+	strcpy(msg_text, "Msg: "); strcat(msg_text, msg_list[msg_sel]);
+    text_layer_set_text(&msgLayer, msg_text);
 }
 
 void config_provider(ClickConfig **config, Window *window) {
@@ -77,20 +76,15 @@ void config_provider(ClickConfig **config, Window *window) {
 }
 
 void failure(int32_t cookie, int http_status, void *ctx) {
-//    text_layer_set_text(&whoLayer, "Failed");
-//    text_layer_set_text(&msgLayer, itoa(http_status));
-//    text_layer_set_text(&cmdLayer, "");
+
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&whoLayer, "Failed");
+        text_layer_set_text(&cmdLayer, "Failed");
     }
 }
 
 void success(int32_t cookie, int http_status, DictionaryIterator *dict, void *ctx) {
-//    text_layer_set_text(&whoLayer, "Success");
-//    text_layer_set_text(&msgLayer, "");
-//    text_layer_set_text(&cmdLayer, "");
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&whoLayer, "Success");
+        text_layer_set_text(&cmdLayer, "Success");
     }
 }
 
@@ -100,20 +94,27 @@ void handle_init(AppContextRef ctx) {
     window_init(&mainWindow, "Status");
     window_stack_push(&mainWindow, true /* Animated */);
     
-    text_layer_init(&whoLayer, GRect(15, 5, 130, 55));
+    text_layer_init(&whoLayer, GRect(5, 5,  135, 50));
     layer_add_child(&mainWindow.layer, &whoLayer.layer);
     text_layer_set_font(&whoLayer,fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
-    text_layer_init(&msgLayer, GRect(15, 55, 130, 105));
+    text_layer_init(&cmdLayer, GRect(5, 50, 135, 100));
+    layer_add_child(&mainWindow.layer, &cmdLayer.layer);
+    text_layer_set_font(&cmdLayer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
+    
+    text_layer_init(&msgLayer, GRect(5, 100, 135, 150));
     layer_add_child(&mainWindow.layer, &msgLayer.layer);
     text_layer_set_font(&msgLayer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-    
-    text_layer_init(&cmdLayer, GRect(15, 105, 130, 155));
-    layer_add_child(&mainWindow.layer, &cmdLayer.layer);
-    text_layer_set_font(&cmdLayer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
     window_set_click_config_provider(&mainWindow, (ClickConfigProvider) config_provider);
     //Main Window init :: END
+
+	//Main Window init :: BEGIN
+ 	strcpy(nam_text, "To: ");  strcat(nam_text, nam_list[who_sel]);
+ 	strcpy(msg_text, "Msg: "); strcat(msg_text, msg_list[msg_sel]);
+    text_layer_set_text(&whoLayer, nam_text);
+    text_layer_set_text(&cmdLayer, "Send? ---->");
+    text_layer_set_text(&msgLayer, msg_text);
 
     http_set_app_id(39152173);
     http_register_callbacks((HTTPCallbacks){
