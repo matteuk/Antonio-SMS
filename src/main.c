@@ -20,9 +20,10 @@ Window mainWindow;
 TextLayer whoLayer, msgLayer, cmdLayer;
 int who_sel = 0;
 int msg_sel = 0;
-const char* nam_list[] = {"Antonio",                   "Lori"};
-const char* who_list[] = {"4165621384@sms.rogers.com", "4162713650@sms.rogers.com"};
-const char* msg_list[] = {"Running late ...", "On my way home", "Busy, call you later"};
+const char *nam_list[] = {"Antonio",                   "Lori"};
+const char *who_list[] = {"4165621384@sms.rogers.com", "4162713650@sms.rogers.com"};
+const char *msg_list[] = {"Running%20late", "On%20my%20way%20home", "Busy,%20call%20you%20later"};
+const char *tmp_list[] = {"Running late",   "On my way home",       "Busy, call you later"};
 static char nam_text[64];
 static char msg_text[64];
 
@@ -33,12 +34,10 @@ void request_mail_to_sms() {
     static char url[256];
 
 //    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
-    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=send&who=4165621384@sms.rogers.com&msg=Onmywayhomealotlongermsg");
-//    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=send");
+    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=send");
     strcpy(who, "&who="); strcat(who, who_list[who_sel]); 
 	strcpy(msg, "&msg="); strcat(msg, msg_list[msg_sel]);
-//	strcat(url, who); strcat(url, msg);
-//	text_layer_set_text(&whoLayer, &url[64]);
+	strcat(url, who); strcat(url, msg);
  	if (http_out_get(url, false, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
         http_out_send() != HTTP_OK) {
     }
@@ -61,7 +60,7 @@ void select_long_click_handler(ClickRecognizerRef recognizer, Window *window) {
 
 void down_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
 	msg_sel++; if (msg_sel == TOTAL_MSG) msg_sel = 0;
-	strcpy(msg_text, "Msg: "); strcat(msg_text, msg_list[msg_sel]);
+	strcpy(msg_text, "Msg: "); strcat(msg_text, tmp_list[msg_sel]);
     text_layer_set_text(&msgLayer, msg_text);
 }
 
@@ -79,15 +78,15 @@ void config_provider(ClickConfig **config, Window *window) {
 }
 
 void failure(int32_t cookie, int http_status, void *ctx) {
-    text_layer_set_text(&cmdLayer, "Tried");
+    text_layer_set_text(&cmdLayer, "Tried.");
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&cmdLayer, "Failed");
+        text_layer_set_text(&cmdLayer, "Failed.");
     }
 }
 
 void success(int32_t cookie, int http_status, DictionaryIterator *dict, void *ctx) {
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&cmdLayer, "Success");
+        text_layer_set_text(&cmdLayer, "Success!!");
     }
 }
 
@@ -97,26 +96,26 @@ void handle_init(AppContextRef ctx) {
     window_init(&mainWindow, "Status");
     window_stack_push(&mainWindow, true /* Animated */);
     
-    text_layer_init(&whoLayer, GRect(5, 10,  135, 40));
+    text_layer_init(&whoLayer, GRect(5, 20,  135, 30));
     layer_add_child(&mainWindow.layer, &whoLayer.layer);
     text_layer_set_font(&whoLayer,fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
-    text_layer_init(&cmdLayer, GRect(5, 50, 135, 90));
-    layer_add_child(&mainWindow.layer, &cmdLayer.layer);
-    text_layer_set_font(&cmdLayer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
-    
-    text_layer_init(&msgLayer, GRect(5, 90, 135, 130));
+    text_layer_init(&msgLayer, GRect(5, 50,  135, 60));
     layer_add_child(&mainWindow.layer, &msgLayer.layer);
     text_layer_set_font(&msgLayer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+    
+    text_layer_init(&cmdLayer, GRect(5, 110, 135, 40));
+    layer_add_child(&mainWindow.layer, &cmdLayer.layer);
+    text_layer_set_font(&cmdLayer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
 
     window_set_click_config_provider(&mainWindow, (ClickConfigProvider) config_provider);
     //Main Window init :: END
 
 	//Main Window init :: BEGIN
  	strcpy(nam_text, "To: ");  strcat(nam_text, nam_list[who_sel]);
- 	strcpy(msg_text, "Msg: "); strcat(msg_text, msg_list[msg_sel]);
+ 	strcpy(msg_text, "Msg: "); strcat(msg_text, tmp_list[msg_sel]);
     text_layer_set_text(&whoLayer, nam_text);
-    text_layer_set_text(&cmdLayer, "Send? ---->");
+    text_layer_set_text(&cmdLayer, "Send. Y/N?");
     text_layer_set_text(&msgLayer, msg_text);
 
     http_set_app_id(39152173);
