@@ -17,6 +17,22 @@ TextLayer whoLayer, msgLayer, cmdLayer;
 #define MAIL_TO_SMS_COOKIE   9997
 
 	
+void request_mail_to_sms(int who_sel, int msg_sel) {
+    DictionaryIterator *body;
+    static char who[64];
+    static char msg[64];
+    static char url[256];
+
+	strcpy(who, "antonio@antonioasaro.stite50.net");
+    strcpy(msg, "Busy, call you later.");
+ 
+	strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=test&");
+    strcpy(url, who); strcat(url, msg);
+	if (http_out_get(url, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
+        http_out_send() != HTTP_OK) {
+    }
+}
+
 void up_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
     text_layer_set_text(&whoLayer, "up_single_click");
     text_layer_set_text(&msgLayer, "");
@@ -55,7 +71,7 @@ void config_provider(ClickConfig **config, Window *window) {
     config[BUTTON_ID_SELECT]->long_click.delay_ms = 700;
 }
 
-void failed(int32_t cookie, int http_status, void *ctx) {
+void failure(int32_t cookie, int http_status, void *ctx) {
     if (cookie == MAIL_TO_SMS_COOKIE) {
         text_layer_set_text(&whoLayer, "");
         text_layer_set_text(&msgLayer, "");
@@ -68,16 +84,6 @@ void success(int32_t cookie, int http_status, DictionaryIterator *dict, void *ct
         text_layer_set_text(&whoLayer, "");
         text_layer_set_text(&msgLayer, "");
         text_layer_set_text(&cmdLayer, "Success");
-    }
-}
-
-void request_mail_to_sms(int who_sel, int msg_sel) {
-    DictionaryIterator *body;
-    static char url[128];
-
-    $url = "http://antonioasaro.site50.net/index.php"
-    if (http_out_get($URL, false, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
-        http_out_send() != HTTP_OK) {
     }
 }
 
@@ -105,7 +111,7 @@ void handle_init(AppContextRef ctx) {
     http_set_app_id(39152173);
     http_register_callbacks((HTTPCallbacks){
         .success=success,
-        .failure=failed
+        .failure=failure
     }, (void*)ctx);
 
 }
