@@ -72,18 +72,20 @@ void config_provider(ClickConfig **config, Window *window) {
 }
 
 void failure(int32_t cookie, int http_status, void *ctx) {
+    text_layer_set_text(&whoLayer, "");
+    text_layer_set_text(&msgLayer, "");
+    text_layer_set_text(&cmdLayer, "Failed");
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&whoLayer, "");
-        text_layer_set_text(&msgLayer, "");
-        text_layer_set_text(&cmdLayer, "Failed");
+        text_layer_set_text(&cmdLayer, "Really failed");
     }
 }
 
 void success(int32_t cookie, int http_status, DictionaryIterator *dict, void *ctx) {
+    text_layer_set_text(&whoLayer, "");
+    text_layer_set_text(&msgLayer, "");
+    text_layer_set_text(&cmdLayer, "Succcess");
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&whoLayer, "");
-        text_layer_set_text(&msgLayer, "");
-        text_layer_set_text(&cmdLayer, "Success");
+        text_layer_set_text(&cmdLayer, "Really uccess");
     }
 }
 
