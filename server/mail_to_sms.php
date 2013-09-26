@@ -1,36 +1,21 @@
 <?PHP
 
-//  print "Working ...";
-  if (!isset($_GET['cmd_sel'])) die();
-  if (!isset($_GET['who_sel'])) die();
-  if (!isset($_GET['msg_sel'])) die();
+//  print "Working ...<br>";
+  if (!isset($_GET['cmd'])) die();
+  if (!isset($_GET['who'])) die();
+  if (!isset($_GET['msg'])) die();
 
-  $cmd_sel = $_GET['cmd_sel'];
-  $who_sel = $_GET['who_sel'];
-  $msg_sel = $_GET['msg_sel'];
+  $cmd = $_GET['cmd'];
+  $who = $_GET['who'];
+  $msg = $_GET['msg'];
   
-  $who = "antonio@antonioasaro.site50.net";
   $sub = "From Antonio's pebble ...";
   $frm = "4165621384@sms.rogers.com";
   $hdr = "From: ".$frm;
 
-  if (strcmp($who_sel, "1")==0) { $who = "4165621384@sms.rogers.com"; }		// Antonio
-  if (strcmp($who_sel, "2")==0) { $who = "4162713650@sms.rogers.com"; }		// Lori	
-  if (strcmp($who_sel, "3")==0) { $who = "4167974863@sms.rogers.com"; }		// Natalie	
-  if (strcmp($who_sel, "4")==0) { $who = "4168804473@@msg.koodomobile.com"; }	// Vince	
-  if (strcmp($who_sel, "5")==0) { $who = "4164180128@sms.rogers.com"; }		// Dave	
-  if (strcmp($who_sel, "6")==0) { $who = "tpers@antelsystems.com";    }		// Tim	
-
-  $msg = "Press and hold 416-562-1384 to reply\r\n";
+  $msg = "------------------------------\r\n" . $msg;
+  $msg = "Press and hold 416-562-1384 to reply\r\n" . $msg;
   $msg = $msg . "------------------------------\r\n";
-  if (strcmp($msg_sel, "1")==0) { $msg = $msg . "Busy, call you later.\r\n"; }
-  if (strcmp($msg_sel, "2")==0) { $msg = $msg . "Sounds good. :)\r\n"; }
-  if (strcmp($msg_sel, "3")==0) { $msg = $msg . "No thanks.\r\n"; }
-  if (strcmp($msg_sel, "4")==0) { $msg = $msg . "Running late ...\r\n"; }
-  if (strcmp($msg_sel, "5")==0) { $msg = $msg . "On my way home.\r\n"; }
-  if (strcmp($msg_sel, "6")==0) { $msg = $msg . "Just a sec.\r\n"; }
-  $msg = $msg . "------------------------------\r\n";
-
 
   $sentOK = 0;
   if (strcmp($cmd_sel, "send")==0) {
