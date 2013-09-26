@@ -26,7 +26,7 @@ void request_mail_to_sms(int who_sel, int msg_sel) {
 	strcpy(who, "&who=antonio@antonioasaro.site50.net");
     strcpy(msg, "&msg=Busy, call you later.");
  
-#define WEATHER_LOC_UNITS "http://antonioasaro.site50.net/weather_db.php"
+#define WEATHER_LOC_UNITS "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk,&who=123,&msg=456"
 	strcpy(url, WEATHER_LOC_UNITS);
 //	strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
 //    strcat(url, who); strcat(url, msg);
