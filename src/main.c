@@ -23,12 +23,15 @@ void request_mail_to_sms(int who_sel, int msg_sel) {
     static char msg[64];
     static char url[256];
 
-	strcpy(who, "antonio@antonioasaro.stite50.net");
-    strcpy(msg, "Busy, call you later.");
+	strcpy(who, "&who=antonio@antonioasaro.site50.net");
+    strcpy(msg, "&msg=Busy, call you later.");
  
-	strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=test&");
-    strcpy(url, who); strcat(url, msg);
-	if (http_out_get(url, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
+#define WEATHER_LOC_UNITS "http://antonioasaro.site50.net/weather_db.php"
+	strcpy(url, WEATHER_LOC_UNITS);
+//	strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
+//    strcat(url, who); strcat(url, msg);
+    text_layer_set_text(&cmdLayer, url);
+	if (http_out_get(url, false, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
         http_out_send() != HTTP_OK) {
     }
 }
@@ -40,22 +43,22 @@ void up_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
 }
 
 void select_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
-    text_layer_set_text(&whoLayer, "");
-    text_layer_set_text(&msgLayer, "select_single_click");
+    text_layer_set_text(&whoLayer, "select_single_clic");
+    text_layer_set_text(&msgLayer, "");
     text_layer_set_text(&cmdLayer, "");
 }
 
 void select_long_click_handler(ClickRecognizerRef recognizer, Window *window) {
-    text_layer_set_text(&whoLayer, "");
-    text_layer_set_text(&msgLayer, "select_long_click");
+    text_layer_set_text(&whoLayer, "select_long_click");
+    text_layer_set_text(&msgLayer, "");
     text_layer_set_text(&cmdLayer, "");
     request_mail_to_sms(1, 2);
 }
 
 void down_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
-    text_layer_set_text(&whoLayer, "");
+    text_layer_set_text(&whoLayer, "down_single_click");
     text_layer_set_text(&msgLayer, "");
-    text_layer_set_text(&cmdLayer, "down_single_click");
+    text_layer_set_text(&cmdLayer, "");
 }
 
 void config_provider(ClickConfig **config, Window *window) {
@@ -72,20 +75,20 @@ void config_provider(ClickConfig **config, Window *window) {
 }
 
 void failure(int32_t cookie, int http_status, void *ctx) {
-    text_layer_set_text(&whoLayer, "");
-    text_layer_set_text(&msgLayer, "");
-    text_layer_set_text(&cmdLayer, "Failed");
+    text_layer_set_text(&whoLayer, "Failed");
+    text_layer_set_text(&msgLayer, itoa(http_status));
+    text_layer_set_text(&cmdLayer, "");
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&cmdLayer, "Really failed");
+        text_layer_set_text(&whoLayer, "Really failed");
     }
 }
 
 void success(int32_t cookie, int http_status, DictionaryIterator *dict, void *ctx) {
-    text_layer_set_text(&whoLayer, "");
+    text_layer_set_text(&whoLayer, "Success");
     text_layer_set_text(&msgLayer, "");
-    text_layer_set_text(&cmdLayer, "Succcess");
+    text_layer_set_text(&cmdLayer, "");
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&cmdLayer, "Really uccess");
+        text_layer_set_text(&whoLayer, "Really success");
     }
 }
 
@@ -97,15 +100,15 @@ void handle_init(AppContextRef ctx) {
     
     text_layer_init(&whoLayer, GRect(15, 5, 130, 55));
     layer_add_child(&mainWindow.layer, &whoLayer.layer);
-    text_layer_set_font(&whoLayer,fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21));
+    text_layer_set_font(&whoLayer,fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
     text_layer_init(&msgLayer, GRect(15, 55, 130, 105));
     layer_add_child(&mainWindow.layer, &msgLayer.layer);
-    text_layer_set_font(&msgLayer, fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21));
+    text_layer_set_font(&msgLayer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
     
     text_layer_init(&cmdLayer, GRect(15, 105, 130, 155));
     layer_add_child(&mainWindow.layer, &cmdLayer.layer);
-    text_layer_set_font(&cmdLayer, fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21));
+    text_layer_set_font(&cmdLayer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
     window_set_click_config_provider(&mainWindow, (ClickConfigProvider) config_provider);
     //Main Window init :: END
