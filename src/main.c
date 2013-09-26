@@ -14,7 +14,7 @@ PBL_APP_INFO(HTTP_UUID,
 
 Window mainWindow;
 TextLayer whoLayer, msgLayer, cmdLayer;
-#define SMS_SEND_COOKIE   9997
+#define MAIL_TO_SMS_COOKIE   9997
 
 	
 void up_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
@@ -33,6 +33,7 @@ void select_long_click_handler(ClickRecognizerRef recognizer, Window *window) {
     text_layer_set_text(&whoLayer, "");
     text_layer_set_text(&msgLayer, "select_long_click");
     text_layer_set_text(&cmdLayer, "");
+    request_mail_to_sms(1, 2);
 }
 
 void down_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
@@ -55,13 +56,29 @@ void config_provider(ClickConfig **config, Window *window) {
 }
 
 void failed(int32_t cookie, int http_status, void *ctx) {
-    if (cookie == SMS_SEND_COOKIE) {
+    if (cookie == MAIL_TO_SMS_COOKIE) {
+        text_layer_set_text(&whoLayer, "");
+        text_layer_set_text(&msgLayer, "");
+        text_layer_set_text(&cmdLayer, "Failed");
     }
 }
 
 void success(int32_t cookie, int http_status, DictionaryIterator *dict, void *ctx) {
-	if (cookie == SMS_SEND_COOKIE) {
-	}
+    if (cookie == MAIL_TO_SMS_COOKIE) {
+        text_layer_set_text(&whoLayer, "");
+        text_layer_set_text(&msgLayer, "");
+        text_layer_set_text(&cmdLayer, "Success");
+    }
+}
+
+void request_mail_to_sms(int who_sel, int msg_sel) {
+    DictionaryIterator *body;
+    static char url[128];
+
+    $url = "http://antonioasaro.site50.net/index.php"
+    if (http_out_get($URL, false, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
+        http_out_send() != HTTP_OK) {
+    }
 }
 
 void handle_init(AppContextRef ctx) {
