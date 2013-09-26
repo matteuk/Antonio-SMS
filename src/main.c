@@ -32,10 +32,11 @@ void request_mail_to_sms() {
     static char msg[64];
     static char url[256];
 
-    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
-//    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=send");
-    strcpy(who, ",&who="); strcpy(msg, ",&msg=");
-	strcat(who, who_list[who_sel]); strcat(msg, msg_list[msg_sel]);
+//    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
+    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=send");
+    strcpy(who, ",&who=4165621384@sms.rogers.com"); strcpy(msg, ",&msg=123");
+//	strcat(who, who_list[who_sel]); strcat(msg, msg_list[msg_sel]);
+	strcat(url, who); strcat(url, msg);
 	if (http_out_get(url, false, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
         http_out_send() != HTTP_OK) {
     }
@@ -76,7 +77,7 @@ void config_provider(ClickConfig **config, Window *window) {
 }
 
 void failure(int32_t cookie, int http_status, void *ctx) {
-
+    text_layer_set_text(&cmdLayer, "Tried");
     if (cookie == MAIL_TO_SMS_COOKIE) {
         text_layer_set_text(&cmdLayer, "Failed");
     }
@@ -94,15 +95,15 @@ void handle_init(AppContextRef ctx) {
     window_init(&mainWindow, "Status");
     window_stack_push(&mainWindow, true /* Animated */);
     
-    text_layer_init(&whoLayer, GRect(5, 5,  135, 50));
+    text_layer_init(&whoLayer, GRect(5, 10,  135, 40));
     layer_add_child(&mainWindow.layer, &whoLayer.layer);
     text_layer_set_font(&whoLayer,fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
-    text_layer_init(&cmdLayer, GRect(5, 50, 135, 100));
+    text_layer_init(&cmdLayer, GRect(5, 50, 135, 90));
     layer_add_child(&mainWindow.layer, &cmdLayer.layer);
     text_layer_set_font(&cmdLayer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
     
-    text_layer_init(&msgLayer, GRect(5, 100, 135, 150));
+    text_layer_init(&msgLayer, GRect(5, 90, 135, 130));
     layer_add_child(&mainWindow.layer, &msgLayer.layer);
     text_layer_set_font(&msgLayer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
