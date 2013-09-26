@@ -23,14 +23,16 @@ void request_mail_to_sms(int who_sel, int msg_sel) {
     static char msg[64];
     static char url[256];
 
-	strcpy(who, "&who=antonio@antonioasaro.site50.net");
-    strcpy(msg, "&msg=Busy, call you later.");
+//	strcpy(who, "&who=antonio@antonioasaro.site50.net");
+ //   strcpy(msg, "&msg=Busy, call you later.");
  
-#define WEATHER_LOC_UNITS "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk,&who=123,&msg=456"
-	strcpy(url, WEATHER_LOC_UNITS);
+    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
+    strcpy(who, ",&who=4165621384@sms.rogers.com");
+    strcpy(msg, ",&msg=Runnning late ...");
+//	strcpy(url, WEATHER_LOC_UNITS);
 //	strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
 //    strcat(url, who); strcat(url, msg);
-    text_layer_set_text(&cmdLayer, url);
+//    text_layer_set_text(&cmdLayer, url);
 	if (http_out_get(url, false, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
         http_out_send() != HTTP_OK) {
     }
@@ -75,20 +77,20 @@ void config_provider(ClickConfig **config, Window *window) {
 }
 
 void failure(int32_t cookie, int http_status, void *ctx) {
-    text_layer_set_text(&whoLayer, "Failed");
-    text_layer_set_text(&msgLayer, itoa(http_status));
-    text_layer_set_text(&cmdLayer, "");
+//    text_layer_set_text(&whoLayer, "Failed");
+//    text_layer_set_text(&msgLayer, itoa(http_status));
+//    text_layer_set_text(&cmdLayer, "");
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&whoLayer, "Really failed");
+        text_layer_set_text(&whoLayer, "Failed");
     }
 }
 
 void success(int32_t cookie, int http_status, DictionaryIterator *dict, void *ctx) {
-    text_layer_set_text(&whoLayer, "Success");
-    text_layer_set_text(&msgLayer, "");
-    text_layer_set_text(&cmdLayer, "");
+//    text_layer_set_text(&whoLayer, "Success");
+//    text_layer_set_text(&msgLayer, "");
+//    text_layer_set_text(&cmdLayer, "");
     if (cookie == MAIL_TO_SMS_COOKIE) {
-        text_layer_set_text(&whoLayer, "Really success");
+        text_layer_set_text(&whoLayer, "Success");
     }
 }
 
