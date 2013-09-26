@@ -33,11 +33,13 @@ void request_mail_to_sms() {
     static char url[256];
 
 //    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=junk");
-    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=send");
-    strcpy(who, ",&who=4165621384@sms.rogers.com"); strcpy(msg, ",&msg=123");
-//	strcat(who, who_list[who_sel]); strcat(msg, msg_list[msg_sel]);
-	strcat(url, who); strcat(url, msg);
-	if (http_out_get(url, false, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
+    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=send&who=4165621384@sms.rogers.com&msg=Onmywayhomealotlongermsg");
+//    strcpy(url, "http://antonioasaro.site50.net/mail_to_sms.php?cmd=send");
+    strcpy(who, "&who="); strcat(who, who_list[who_sel]); 
+	strcpy(msg, "&msg="); strcat(msg, msg_list[msg_sel]);
+//	strcat(url, who); strcat(url, msg);
+//	text_layer_set_text(&whoLayer, &url[64]);
+ 	if (http_out_get(url, false, MAIL_TO_SMS_COOKIE, &body) != HTTP_OK ||
         http_out_send() != HTTP_OK) {
     }
 }
