@@ -96,11 +96,11 @@ void handle_init(AppContextRef ctx) {
     window_init(&mainWindow, "Status");
     window_stack_push(&mainWindow, true /* Animated */);
     
-    text_layer_init(&whoLayer, GRect(5, 20,  135, 30));
+    text_layer_init(&whoLayer, GRect(5, 10,  135, 30));
     layer_add_child(&mainWindow.layer, &whoLayer.layer);
     text_layer_set_font(&whoLayer,fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
-    text_layer_init(&msgLayer, GRect(5, 50,  135, 60));
+    text_layer_init(&msgLayer, GRect(5, 40,  135, 60));
     layer_add_child(&mainWindow.layer, &msgLayer.layer);
     text_layer_set_font(&msgLayer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
     
