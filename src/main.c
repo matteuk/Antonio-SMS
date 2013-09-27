@@ -15,6 +15,7 @@ PBL_APP_INFO(HTTP_UUID,
 #define MAIL_TO_SMS_COOKIE   9997
 #define TOTAL_WHO 2
 #define TOTAL_MSG 3
+#define TIME_DELAY 5000
 	
 Window mainWindow;
 TextLayer whoLayer, msgLayer, cmdLayer;
@@ -77,17 +78,23 @@ void config_provider(ClickConfig **config, Window *window) {
     config[BUTTON_ID_SELECT]->long_click.delay_ms = 700;
 }
 
+void handle_timer(AppContextRef ctx, AppTimerHandle handle, uint32_t cookie) {
+    text_layer_set_text(&cmdLayer, "Send. Y/N?");
+}
+
 void failure(int32_t cookie, int http_status, void *ctx) {
     text_layer_set_text(&cmdLayer, "Tried.");
     if (cookie == MAIL_TO_SMS_COOKIE) {
         text_layer_set_text(&cmdLayer, "Failed.");
     }
+    app_timer_send_event(ctx, TIME_DELAY, 42); 
 }
 
 void success(int32_t cookie, int http_status, DictionaryIterator *dict, void *ctx) {
     if (cookie == MAIL_TO_SMS_COOKIE) {
         text_layer_set_text(&cmdLayer, "Success!!");
     }
+    app_timer_send_event(ctx, TIME_DELAY, 42); 
 }
 
 void handle_init(AppContextRef ctx) {
@@ -129,6 +136,7 @@ void handle_init(AppContextRef ctx) {
 void pbl_main(void *params) {
     PebbleAppHandlers handlers = {
         .init_handler = &handle_init,
+        .timer_handler = handle_timer,
         .messaging_info = {
             .buffer_sizes = {
                 .inbound = 256,
