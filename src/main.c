@@ -12,19 +12,22 @@ PBL_APP_INFO(HTTP_UUID,
     RESOURCE_ID_MENU_ICON,
     APP_INFO_STANDARD_APP);
 
-#define MAIL_TO_SMS_COOKIE   9997
-#define TOTAL_WHO 2
-#define TOTAL_MSG 3
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#define TOTAL_WHO 5
+#define TOTAL_MSG 6
+const char *nam_list[] = {"Antonio",                   "Lori",                      "Natalie",               "Vince",                          "Dave"};
+const char *who_list[] = {"4165621384@sms.rogers.com", "4162713650@sms.rogers.com", "4167974863@rogers.com", "4168804473@msg.koodomobile.com", "4164180128@sms.rogers.com"};
+const char *msg_list[] = {"OK", "No", "Just%20a%20sec", "Running%20late", "On%20my%20way%20home", "Busy,%20call%20you%20later"};    // repace spaces w/ "%20"
+const char *tmp_list[] = {"OK", "No", "Just a sec",     "Running late",   "On my way home",       "Busy, call you later"};
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#define MAIL_TO_SMS_COOKIE   359997
 #define TIME_DELAY 5000
 	
 Window mainWindow;
 TextLayer whoLayer, msgLayer, cmdLayer;
 int who_sel = 0;
 int msg_sel = 0;
-const char *nam_list[] = {"Antonio",                   "Lori"};
-const char *who_list[] = {"4165621384@sms.rogers.com", "4162713650@sms.rogers.com"};
-const char *msg_list[] = {"Running%20late", "On%20my%20way%20home", "Busy,%20call%20you%20later"};
-const char *tmp_list[] = {"Running late",   "On my way home",       "Busy, call you later"};
 static char nam_text[64];
 static char msg_text[64];
 
