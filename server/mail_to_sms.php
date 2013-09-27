@@ -9,13 +9,9 @@
   $who = $_GET['who'];
   $msg = $_GET['msg'];
   
-  $sub = "From Antonio's pebble ...";
+  $sub = "Hold 416-562-1384 to reply";
   $frm = "4165621384@sms.rogers.com";
   $hdr = "From: ".$frm;
-
-  $msg = "------------------------------\r\n" . $msg;
-  $msg = "Press and hold 416-562-1384 to reply\r\n" . $msg;
-  $msg = $msg . "\r\n------------------------------\r\n";
 
   $sentOK = 0;
   if (strcmp($cmd, "send") == 0) {
