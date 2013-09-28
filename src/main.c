@@ -13,12 +13,12 @@ PBL_APP_INFO(HTTP_UUID,
     APP_INFO_STANDARD_APP);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define TOTAL_WHO 5
-#define TOTAL_MSG 6
-const char *nam_list[] = {"Antonio",                   "Lori",                      "Natalie",               "Vince",                          "Dave"};
-const char *who_list[] = {"4165621384@sms.rogers.com", "4162713650@sms.rogers.com", "4167974863@rogers.com", "4168804473@msg.koodomobile.com", "4164180128@sms.rogers.com"};
-const char *msg_list[] = {"OK", "No", "Just%20a%20sec", "Running%20late", "On%20my%20way%20home", "Busy,%20call%20you%20later"};    // repace spaces w/ "%20"
-const char *tmp_list[] = {"OK", "No", "Just a sec",     "Running late",   "On my way home",       "Busy, call you later"};
+#define TOTAL_WHO 6
+#define TOTAL_MSG 8
+const char *nam_list[] = {"Antonio",                   "Lori",                      "Natalie",               "Vince",                          "Dave",                      "Tim"};
+const char *who_list[] = {"4165621384@sms.rogers.com", "4162713650@sms.rogers.com", "4167974863@rogers.com", "4168804473@msg.koodomobile.com", "4164180128@sms.rogers.com", "tpers@antelsystems.com"};
+const char *msg_list[] = {"OK", "No", "Lunch?", "Ready%20to%20go?", "Just%20a%20sec", "Running%20late", "On%20my%20way%20home", "Busy,%20call%20you%20later"};    // repace spaces w/ "%20"
+const char *tmp_list[] = {"OK", "No", "Lunch?", "Ready to go?",     "Just a sec",     "Running late",   "On my way home",       "Busy, call you later"};
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define MAIL_TO_SMS_COOKIE   359997
