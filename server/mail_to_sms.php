@@ -9,8 +9,8 @@
   $who = $_GET['who'];
   $msg = $_GET['msg'];
   
-  $sub = "Hold 0007-562-1384 to reply";
-  $frm = "4165621384@sms.rogers.com";
+  $sub = "Hold 07538682194 to reply";
+  $frm = "07538682194@sms.rogers.com";
   $hdr = "From: ".$frm;
 
   $sentOK = 0;
